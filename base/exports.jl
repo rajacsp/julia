@@ -659,6 +659,7 @@ export
     done,
     next,
     start,
+    iterate,
 
     enumerate,  # re-exported from Iterators
     zip,

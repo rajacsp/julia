@@ -1497,6 +1497,10 @@ end
 # Issue #26248
 @deprecate conj(x) x
 
+# Special string deprecation
+@deprecate start(s::AbstractString) firstindex(s)
+@deprecate done(s::AbstractString, i::Integer) i > ncodeunits(s)
+
 # END 0.7 deprecations
 
 # BEGIN 1.0 deprecations
