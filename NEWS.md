@@ -1072,6 +1072,8 @@ Deprecated or removed
 
   * `contains` has been deprecated in favor of a more general `isfound` function ([#26283]).
 
+  * `Regex` objects are no longer callable. Use `isfound` instead ([#26283]).
+
   * The methods of `range` based on positional arguments have been deprecated in favor of
     keyword arguments ([#25896]).
 

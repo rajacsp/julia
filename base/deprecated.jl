@@ -1455,6 +1455,10 @@ end
 # PR #26283
 @deprecate contains(haystack, needle) isfound(needle, haystack)
 @deprecate contains(s::AbstractString, r::Regex, offset::Integer) isfound(r, s, offset=offset)
+function (r::Regex)(s)
+    depwarn("`(r::Regex)(s)` is deprecated, use `isfound(r, s)` instead.", :Regex)
+    isfound(r, s)
+end
 
 # Issue #25786
 @deprecate_binding DevNull devnull
