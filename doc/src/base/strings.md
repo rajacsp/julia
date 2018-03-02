@@ -38,7 +38,6 @@ Base.findfirst(::AbstractString, ::AbstractString)
 Base.findnext(::AbstractString, ::AbstractString, ::Integer)
 Base.findlast(::AbstractString, ::AbstractString)
 Base.findprev(::AbstractString, ::AbstractString, ::Integer)
-Base.contains
 Base.reverse(::Union{String,SubString{String}})
 Base.replace(s::AbstractString, ::Pair)
 Base.split

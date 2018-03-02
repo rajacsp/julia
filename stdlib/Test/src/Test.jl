@@ -533,8 +533,8 @@ end
 
 # Test for warning messages (deprecated)
 
-contains_warn(output, s::AbstractString) = contains(output, s)
-contains_warn(output, s::Regex) = contains(output, s)
+contains_warn(output, s::AbstractString) = isfound(s, output)
+contains_warn(output, s::Regex) = isfound(s, output)
 contains_warn(output, s::Function) = s(output)
 contains_warn(output, S::Union{AbstractArray,Tuple}) = all(s -> contains_warn(output, s), S)
 

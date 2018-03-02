@@ -1070,6 +1070,8 @@ Deprecated or removed
   * The `remove_destination` keyword argument to `cp`, `mv`, and the unexported `cptree`
     has been renamed to `force` ([#25979]).
 
+  * `contains` has been deprecated in favor of a more general `isfound` function ([#26283]).
+
   * The methods of `range` based on positional arguments have been deprecated in favor of
     keyword arguments ([#25896]).
 

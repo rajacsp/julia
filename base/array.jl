@@ -1685,6 +1685,28 @@ findfirst(testf::Function, A::Union{AbstractArray, AbstractString}) =
     findnext(testf, A, first(keys(A)))
 
 """
+    isfound(needle, haystack)
+
+Determine whether `needle` is found within `haystack`. This function is effectively
+equivalent to `findfirst(needle, haystack) !== nothing`.
+
+See also [`findfirst`](@ref) and [`any`](@ref).
+
+# Examples
+```jldoctest
+julia> isfound('x', "hexonxonx")
+true
+
+julia> isfound("hi", "hi mom")
+true
+
+julia> isfound(equalto(3), 5:10)
+false
+```
+"""
+isfound(needle, haystack) = findfirst(needle, haystack) !== nothing
+
+"""
     findprev(A, i)
 
 Find the previous index before or including `i` of a `true` element of `A`,

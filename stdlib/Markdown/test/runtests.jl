@@ -144,16 +144,16 @@ let text =
         @test Markdown.rst(md) == expected
     end
     let html = Markdown.html(md)
-        @test contains(html, ",<a href=\"#footnote-1\" class=\"footnote\">[1]</a>")
-        @test contains(html, ".<a href=\"#footnote-note\" class=\"footnote\">[note]</a>")
-        @test contains(html, "<div class=\"footnote\" id=\"footnote-1\"><p class=\"footnote-title\">1</p>")
-        @test contains(html, "<div class=\"footnote\" id=\"footnote-note\"><p class=\"footnote-title\">note</p>")
+        @test isfound(",<a href=\"#footnote-1\" class=\"footnote\">[1]</a>", html)
+        @test isfound(".<a href=\"#footnote-note\" class=\"footnote\">[note]</a>", html)
+        @test isfound("<div class=\"footnote\" id=\"footnote-1\"><p class=\"footnote-title\">1</p>", html)
+        @test isfound("<div class=\"footnote\" id=\"footnote-note\"><p class=\"footnote-title\">note</p>", html)
     end
     let latex = Markdown.latex(md)
-        @test contains(latex, ",\\footnotemark[1]")
-        @test contains(latex, ".\\footnotemark[note]")
-        @test contains(latex, "\n\\footnotetext[1]{Footnote text for")
-        @test contains(latex, "\n\\footnotetext[note]{A longer footnote:\n")
+        @test isfound(",\\footnotemark[1]", latex)
+        @test isfound(".\\footnotemark[note]", latex)
+        @test isfound("\n\\footnotetext[1]{Footnote text for", latex)
+        @test isfound("\n\\footnotetext[note]{A longer footnote:\n", latex)
     end
 end
 
@@ -239,9 +239,9 @@ let doc = Markdown.parse(
         3. b
         """
     )
-    @test contains(sprint(term, doc), "1. ")
-    @test contains(sprint(term, doc), "2. ")
-    @test !contains(sprint(term, doc), "3. ")
+    @test isfound("1. ", sprint(term, doc))
+    @test isfound("2. ", sprint(term, doc))
+    @test !isfound("3. ", sprint(term, doc))
 end
 
 # HTML output

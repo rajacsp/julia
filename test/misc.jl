@@ -14,7 +14,7 @@ let
         error("unexpected")
     catch ex
         @test isa(ex, AssertionError)
-        @test contains(ex.msg, "1 == 2")
+        @test isfound("1 == 2", ex.msg)
     end
 end
 # test @assert message
@@ -44,8 +44,8 @@ let
         error("unexpected")
     catch ex
         @test isa(ex, AssertionError)
-        @test !contains(ex.msg,  "1 == 2")
-        @test contains(ex.msg, "random_object")
+        @test !isfound("1 == 2", ex.msg)
+        @test isfound("random_object", ex.msg)
     end
 end
 # if the second argument is an expression, c
@@ -82,7 +82,7 @@ let
     exename = Base.julia_cmd()
     script = "$redir_err; module A; f() = 1; end; A.f() = 1"
     warning_str = read(`$exename --warn-overwrite=yes --startup-file=no -e $script`, String)
-    @test contains(warning_str, "f()")
+    @test isfound("f()", warning_str)
 end
 
 # lock / unlock
@@ -371,16 +371,16 @@ end
 
 let optstring = repr("text/plain", Base.JLOptions())
     @test startswith(optstring, "JLOptions(\n")
-    @test !contains(optstring, "Ptr")
+    @test !isfound("Ptr", optstring)
     @test endswith(optstring, "\n)")
-    @test contains(optstring, " = \"")
+    @test isfound(" = \"", optstring)
 end
 let optstring = repr(Base.JLOptions())
     @test startswith(optstring, "JLOptions(")
     @test endswith(optstring, ")")
-    @test !contains(optstring, "\n")
-    @test !contains(optstring, "Ptr")
-    @test contains(optstring, " = \"")
+    @test !isfound("\n", optstring)
+    @test !isfound("Ptr", optstring)
+    @test isfound(" = \"", optstring)
 end
 
 # Base.securezero! functions (#17579)
@@ -579,7 +579,7 @@ end
 
 include("testenv.jl")
 
-let flags = Cmd(filter(a->!contains(a, "depwarn"), collect(test_exeflags)))
+let flags = Cmd(filter(a->!isfound("depwarn", a), collect(test_exeflags)))
     local cmd = `$test_exename $flags deprecation_exec.jl`
 
     if !success(pipeline(cmd; stdout=stdout, stderr=stderr))

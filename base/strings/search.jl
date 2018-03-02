@@ -431,30 +431,7 @@ julia> findprev("Julia", "JuliaLang", 6)
 """
 findprev(t::AbstractString, s::AbstractString, i::Integer) = _rsearch(s, t, i)
 
-"""
-    contains(haystack::AbstractString, needle::Union{AbstractString,Regex,AbstractChar})
-
-Determine whether the second argument is a substring of the first. If `needle`
-is a regular expression, checks whether `haystack` contains a match.
-
-# Examples
-```jldoctest
-julia> contains("JuliaLang is pretty cool!", "Julia")
-true
-
-julia> contains("JuliaLang is pretty cool!", 'a')
-true
-
-julia> contains("aba", r"a.a")
-true
-
-julia> contains("abba", r"a.a")
-false
-```
-"""
-function contains end
-
-contains(haystack::AbstractString, needle::Union{AbstractString,AbstractChar}) =
+isfound(needle::Union{AbstractString,AbstractChar}, haystack::AbstractString) =
     _searchindex(haystack, needle, firstindex(haystack)) != 0
 
-in(::AbstractString, ::AbstractString) = error("use contains(x,y) for string containment")
+in(::AbstractString, ::AbstractString) = error("use isfound(x, y) for string containment")

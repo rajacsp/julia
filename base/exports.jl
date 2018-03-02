@@ -447,7 +447,6 @@ export
     zeros,
 
 # search, find, match and related functions
-    contains,
     eachmatch,
     endswith,
     equalto,
@@ -460,6 +459,7 @@ export
     findmax!,
     findnext,
     findprev,
+    isfound,
     occursin,
     match,
     searchsorted,

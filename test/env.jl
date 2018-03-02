@@ -50,8 +50,8 @@ end
         io = IOBuffer()
         show(io, ENV)
         s = String(take!(io))
-        @test contains(s, "$k1=$k1")
-        @test contains(s, "$k2=$k2")
+        @test isfound("$k1=$k1", s)
+        @test isfound("$k2=$k2", s)
 
         @test pop!(ENV, k1) == k1
         @test !haskey(ENV, k1)

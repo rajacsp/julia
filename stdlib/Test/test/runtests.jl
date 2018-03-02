@@ -119,87 +119,87 @@ let fails = @testset NoThrowTestSet begin
     end
 
     let str = sprint(show, fails[1])
-        @test contains(str, "Expression: error()")
-        @test contains(str, "Thrown: ErrorException")
+        @test isfound("Expression: error()", str)
+        @test isfound("Thrown: ErrorException", str)
     end
 
     let str = sprint(show, fails[2])
-        @test contains(str, "Expression: 1 + 1")
-        @test contains(str, "No exception thrown")
+        @test isfound("Expression: 1 + 1", str)
+        @test isfound("No exception thrown", str)
     end
 
     let str = sprint(show, fails[3])
-        @test contains(str, "Expression: 1 + 1 == 2 + 2")
-        @test contains(str, "Evaluated: 2 == 4")
+        @test isfound("Expression: 1 + 1 == 2 + 2", str)
+        @test isfound("Evaluated: 2 == 4", str)
     end
 
     let str = sprint(show, fails[4])
-        @test contains(str, "Expression: 1 / 1 ≈ 2 / 1")
-        @test contains(str, "Evaluated: 1.0 ≈ 2.0")
+        @test isfound("Expression: 1 / 1 ≈ 2 / 1", str)
+        @test isfound("Evaluated: 1.0 ≈ 2.0", str)
     end
 
     let str = sprint(show, fails[5])
-        @test contains(str, "Expression: 1 + 0 == 2 + 0 == 3 + 0")
-        @test contains(str, "Evaluated: 1 == 2 == 3")
+        @test isfound("Expression: 1 + 0 == 2 + 0 == 3 + 0", str)
+        @test isfound("Evaluated: 1 == 2 == 3", str)
     end
 
     let str = sprint(show, fails[6])
-        @test contains(str, "Expression: 1 - 2 == 2 - 1")
-        @test contains(str, "Evaluated: -1 == 1")
+        @test isfound("Expression: 1 - 2 == 2 - 1", str)
+        @test isfound("Evaluated: -1 == 1", str)
     end
 
     let str = sprint(show, fails[7])
-        @test contains(str, "Expression: (==)(1:2...)")
-        @test !contains(str, "Evaluated")
+        @test isfound("Expression: (==)(1:2...)", str)
+        @test !isfound("Evaluated", str)
     end
 
     let str = sprint(show, fails[8])
-        @test contains(str, "Expression: isequal(0 / 0, 1 / 0)")
-        @test contains(str, "Evaluated: isequal(NaN, Inf)")
+        @test isfound("Expression: isequal(0 / 0, 1 / 0)", str)
+        @test isfound("Evaluated: isequal(NaN, Inf)", str)
     end
 
     let str = sprint(show, fails[9])
-        @test contains(str, "Expression: isequal(1:2...)")
-        @test contains(str, "Evaluated: isequal(1, 2)")
+        @test isfound("Expression: isequal(1:2...)", str)
+        @test isfound("Evaluated: isequal(1, 2)", str)
     end
 
     let str = sprint(show, fails[10])
-        @test contains(str, "Expression: isapprox(0 / 1, -1 / 0)")
-        @test contains(str, "Evaluated: isapprox(0.0, -Inf)")
+        @test isfound("Expression: isapprox(0 / 1, -1 / 0)", str)
+        @test isfound("Evaluated: isapprox(0.0, -Inf)", str)
     end
 
     let str = sprint(show, fails[11])
-        @test contains(str, "Expression: isapprox(1 / 2, 2 / 1, atol=1 / 1)")
-        @test contains(str, "Evaluated: isapprox(0.5, 2.0; atol=1.0)")
+        @test isfound("Expression: isapprox(1 / 2, 2 / 1, atol=1 / 1)", str)
+        @test isfound("Evaluated: isapprox(0.5, 2.0; atol=1.0)", str)
     end
 
     let str = sprint(show, fails[12])
-        @test contains(str, "Expression: isapprox(1 - 2, 2 - 1; atol=1 - 1)")
-        @test contains(str, "Evaluated: isapprox(-1, 1; atol=0)")
+        @test isfound("Expression: isapprox(1 - 2, 2 - 1; atol=1 - 1)", str)
+        @test isfound("Evaluated: isapprox(-1, 1; atol=0)", str)
     end
 
     let str = sprint(show, fails[13])
-        @test contains(str, "Expression: isapprox(1, 2; k...)")
-        @test contains(str, "Evaluated: isapprox(1, 2; atol=0, nans=true)")
+        @test isfound("Expression: isapprox(1, 2; k...)", str)
+        @test isfound("Evaluated: isapprox(1, 2; atol=0, nans=true)", str)
     end
 
     let str = sprint(show, fails[14])
-        @test contains(str, "Unexpected Pass")
-        @test contains(str, "Expression: true")
+        @test isfound("Unexpected Pass", str)
+        @test isfound("Expression: true", str)
     end
 
     let str = sprint(show, fails[15])
-        @test contains(str, "Expression: ==(1, 1:2...)")
-        @test contains(str, "MethodError: no method matching ==(::$Int, ::$Int, ::$Int)")
+        @test isfound("Expression: ==(1, 1:2...)", str)
+        @test isfound("MethodError: no method matching ==(::$Int, ::$Int, ::$Int)", str)
     end
 end
 
 @testset "printing of a TestSetException" begin
     tse_str = sprint(show, Test.TestSetException(1, 2, 3, 4, Vector{Union{Test.Error, Test.Fail}}()))
-    @test contains(tse_str, "1 passed")
-    @test contains(tse_str, "2 failed")
-    @test contains(tse_str, "3 errored")
-    @test contains(tse_str, "4 broken")
+    @test isfound("1 passed", tse_str)
+    @test isfound("2 failed", tse_str)
+    @test isfound("3 errored", tse_str)
+    @test isfound("4 broken", tse_str)
 end
 
 @test Test.finish(Test.FallbackTestSet()) !== nothing
@@ -513,7 +513,7 @@ Base.getindex(a::SillyArray, i) = rand() > 0.5 ? 0 : false
 @testset "@inferred works with A[i] expressions" begin
     @test @inferred((1:3)[2]) == 2
     test_result = @test_throws ErrorException @inferred(SillyArray()[2])
-    @test contains(test_result.value.msg, "Bool")
+    @test isfound("Bool", test_result.value.msg)
 end
 # Issue #14928
 # Make sure abstract error type works.
@@ -550,30 +550,30 @@ end
     local msg = read(pipeline(ignorestatus(`$(Base.julia_cmd()) --startup-file=no --color=no $f`), stderr=devnull), String)
     # NOTE: This test depends on the code generated by @testset getting compiled,
     # to get good backtraces. If it fails, check the implementation of `testset_beginend`.
-    @test !contains(msg, "do_test(")
-    @test !contains(msg, "include(")
-    @test contains(msg, "at " * f * ":3")
-    @test contains(msg, "at " * f * ":4")
+    @test !isfound("do_test(", msg)
+    @test !isfound("include(", msg)
+    @test isfound("at " * f * ":3", msg)
+    @test isfound("at " * f * ":4", msg)
     rm(f; force=true)
 end
 
 let io = IOBuffer()
     exc = Test.TestSetException(1,2,3,4,Vector{Union{Test.Error, Test.Fail}}())
     Base.showerror(io, exc, backtrace())
-    @test !contains(String(take!(io)), "backtrace()")
+    @test !isfound("backtrace()", String(take!(io)))
 end
 
 @testset "#19750" begin
     io = IOBuffer()
     exc = Test.TestSetException(1,2,3,4,Vector{Union{Test.Error, Test.Fail}}())
     Base.showerror(io, exc, backtrace())
-    @test !contains(String(take!(io)), "backtrace()")
+    @test !isfound("backtrace()", String(take!(io)))
 
     exc = Test.FallbackTestSetException("msg")
     Base.showerror(io, exc, backtrace())
     str = String(take!(io))
-    @test contains(str, "msg")
-    @test !contains(str, "backtrace()")
+    @test isfound("msg", str)
+    @test !isfound("backtrace()", str)
 end
 
 let msg = read(pipeline(ignorestatus(`$(Base.julia_cmd()) --startup-file=no --color=no -e '
@@ -595,15 +595,14 @@ let msg = read(pipeline(ignorestatus(`$(Base.julia_cmd()) --startup-file=no --co
                 @test foo(fill(1., 4)) == 15
             end
         end'`), stderr=devnull), String)
-    @test contains(msg,
-        """
+    @test isfound("""
         Test Summary: | Pass  Fail  Total
         Foo Tests     |    2     2      4
           Animals     |    1     1      2
             Felines   |    1            1
             Canines   |          1      1
           Arrays      |    1     1      2
-        """)
+        """, msg)
 end
 
 # 20489
@@ -646,9 +645,9 @@ end
     """)
 
     local msg = read(pipeline(ignorestatus(`$(Base.julia_cmd()) --startup-file=no --color=no $f`), stderr=devnull), String)
-    @test contains(msg, "at " * f * ":" * "3")
-    @test contains(msg, "at " * f * ":" * "4")
-    @test contains(msg, "at " * f * ":" * "5")
+    @test isfound("at " * f * ":" * "3", msg)
+    @test isfound("at " * f * ":" * "4", msg)
+    @test isfound("at " * f * ":" * "5", msg)
 
     rm(f; force=true)
 end
@@ -663,14 +662,14 @@ end
     x, y = 0.9, 0.1
     @test x ≈ y atol=0.01
     """)
-    @test contains(msg, "Evaluated: 0.9 ≈ 0.1 (atol=0.01)")
+    @test isfound("Evaluated: 0.9 ≈ 0.1 (atol=0.01)", msg)
 
     msg = f("""
     using Test
     x, y = 0.9, 0.1
     @test x ≈ y nans=true atol=0.01
     """)
-    @test contains(msg, "Evaluated: 0.9 ≈ 0.1 (nans=true, atol=0.01)")
+    @test isfound("Evaluated: 0.9 ≈ 0.1 (nans=true, atol=0.01)", msg)
 end
 
 @testset "@test_logs" begin
@@ -810,7 +809,7 @@ end
     """)
     run(pipeline(ignorestatus(`$(Base.julia_cmd()) --startup-file=no --color=no $f`), stderr=err))
     msg = read(err, String)
-    @test contains(msg, "Expected `desc` to be an AbstractTestSet, it is a String")
+    @test isfound("Expected `desc` to be an AbstractTestSet, it is a String", msg)
     rm(f; force=true)
 end
 

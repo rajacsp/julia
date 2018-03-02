@@ -762,11 +762,11 @@ function find_registered!(
         open(joinpath(registry, "Registry.toml")) do io
             # skip forward until [packages] section
             for line in eachline(io)
-                contains(line, r"^ \s* \[ \s* packages \s* \] \s* $"x) && break
+                isfound(r"^ \s* \[ \s* packages \s* \] \s* $"x, line) && break
             end
             # find lines with uuid or name we're looking for
             for line in eachline(io)
-                contains(line,regex) || continue
+                isfound(regex, line) || continue
                 m = match(line_re, line)
                 m == nothing &&
                     error("misformatted registry.toml package entry: $line")

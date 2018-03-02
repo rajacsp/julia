@@ -244,11 +244,11 @@ incomplete_tag(ex) = :none
 function incomplete_tag(ex::Expr)
     Meta.isexpr(ex, :incomplete) || return :none
     msg = ex.args[1]
-    contains(msg, "string") && return :string
-    contains(msg, "comment") && return :comment
-    contains(msg, "requires end") && return :block
-    contains(msg, "\"`\"") && return :cmd
-    contains(msg, "character") && return :char
+    isfound("string", msg) && return :string
+    isfound("comment", msg) && return :comment
+    isfound("requires end", msg) && return :block
+    isfound("\"`\"", msg) && return :cmd
+    isfound("character", msg) && return :char
     return :other
 end
 

@@ -475,8 +475,8 @@ test_nested_loops()
                      append=false))
         out = readchomp(joinpath(dir, "out.txt"))
         err = readchomp(joinpath(dir, "err.txt"))
-        @test contains(out, "libat_store") || contains(out, "atomic_store")
-        @test !contains(err, "__atomic_store")
+        @test isfound("libat_store", out) || isfound("atomic_store", out)
+        @test !isfound("__atomic_store", err)
     end
 end
 

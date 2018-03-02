@@ -131,11 +131,11 @@ let uuid = raw"(?i)[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}(
 end
 
 function parse_package(word::AbstractString)::PackageSpec
-    if contains(word, uuid_re)
+    if isfound(uuid_re, word)
         return PackageSpec(UUID(word))
-    elseif contains(word, name_re)
+    elseif isfound(name_re, word)
         return PackageSpec(String(match(name_re, word).captures[1]))
-    elseif contains(word, name_uuid_re)
+    elseif isfound(name_uuid_re, word)
         m = match(name_uuid_re, word)
         return PackageSpec(String(m.captures[1]), UUID(m.captures[2]))
     else

@@ -537,23 +537,23 @@ julia> findnext(equalto('o'), "xylophone", 5)
 julia> findnext(equalto('o'), "xylophone", 8)
 ```
 
-You can use the [`contains`](@ref) function to check if a substring is contained in a string:
+You can use the [`isfound`](@ref) function to check if a substring is found within a string:
 
 ```jldoctest
-julia> contains("Hello, world.", "world")
+julia> isfound("world", "Hello, world.")
 true
 
-julia> contains("Xylophon", "o")
+julia> isfound("o", "Xylophon")
 true
 
-julia> contains("Xylophon", "a")
+julia> isfound("a", "Xylophon")
 false
 
-julia> contains("Xylophon", 'o')
+julia> isfound('o', "Xylophon")
 true
 ```
 
-The last example shows that [`contains`](@ref) can also look for a character literal.
+The last example shows that [`isfound`](@ref) can also look for a character literal.
 
 Two other handy string functions are [`repeat`](@ref) and [`join`](@ref):
 
@@ -608,20 +608,20 @@ julia> typeof(ans)
 Regex
 ```
 
-To check if a regex matches a string, use [`contains`](@ref):
+To check if a regex matches a string, use [`isfound`](@ref):
 
 ```jldoctest
-julia> contains("not a comment", r"^\s*(?:#|$)")
+julia> isfound(r"^\s*(?:#|$)", "not a comment")
 false
 
-julia> contains("# a comment", r"^\s*(?:#|$)")
+julia> isfound(r"^\s*(?:#|$)", "# a comment")
 true
 ```
 
-As one can see here, [`contains`](@ref) simply returns true or false, indicating whether the
-given regex matches the string or not. Commonly, however, one wants to know not just whether a
-string matched, but also *how* it matched. To capture this information about a match, use the
-[`match`](@ref) function instead:
+As one can see here, [`isfound`](@ref) simply returns true or false, indicating whether a
+match for the given regex was found in the string. Commonly, however, one wants to know not
+just whether a string matched, but also *how* it matched. To capture this information about
+a match, use the [`match`](@ref) function instead:
 
 ```jldoctest
 julia> match(r"^\s*(?:#|$)", "not a comment")
