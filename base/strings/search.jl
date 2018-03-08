@@ -101,6 +101,8 @@ julia> findfirst("Julia", "JuliaLang")
 findfirst(pattern::AbstractString, string::AbstractString) =
     findnext(pattern, string, firstindex(string))
 
+findfirst(c::AbstractChar, s::AbstractString) = findfirst(equalto(c), s)
+
 # AbstractString implementation of the generic findnext interface
 function findnext(testf::Function, s::AbstractString, i::Integer)
     z = ncodeunits(s) + 1

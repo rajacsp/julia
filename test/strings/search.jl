@@ -65,6 +65,7 @@ end
 for str in (u8str, GenericString(u8str))
     @test_throws BoundsError findnext(equalto('z'), str, 0)
     @test_throws BoundsError findnext(equalto('∀'), str, 0)
+    @test findfirst('z', str) == nothing
     @test findfirst(equalto('z'), str) == nothing
     @test findfirst(equalto('\0'), str) == nothing
     @test findfirst(equalto('\u80'), str) == nothing
