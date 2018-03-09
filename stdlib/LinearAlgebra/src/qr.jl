@@ -527,21 +527,30 @@ AbstractMatrix{T}(Q::QRPackedQ) where {T} = QRPackedQ{T}(Q)
 QRCompactWYQ{S}(Q::QRCompactWYQ) where {S} = QRCompactWYQ(convert(AbstractMatrix{S}, Q.factors), convert(AbstractMatrix{S}, Q.T))
 AbstractMatrix{S}(Q::QRCompactWYQ{S}) where {S} = Q
 AbstractMatrix{S}(Q::QRCompactWYQ) where {S} = QRCompactWYQ{S}(Q)
-Matrix(A::AbstractQ{T}) where {T} = lmul!(A, Matrix{T}(I, size(A.factors, 1), min(size(A.factors)...)))
-Array(A::AbstractQ) = Matrix(A)
+Matrix(Q::Union{QRCompactWYQ,QRPackedQ}) where {T} = lmul!(A, Matrix{T}(I, size(Q, 1), min(size(A.factors)...)))
+Array(Q::AbstractQ) = Matrix(Q)
 
-size(A::Union{QR,QRCompactWY,QRPivoted}, dim::Integer) = size(getfield(A, :factors), dim)
-size(A::Union{QR,QRCompactWY,QRPivoted}) = size(getfield(A, :factors))
-size(A::AbstractQ, dim::Integer) = 0 < dim ? (dim <= 2 ? size(getfield(A, :factors), 1) : 1) : throw(BoundsError())
-size(A::AbstractQ) = size(A, 1), size(A, 2)
+size(F::Union{QR,QRCompactWY,QRPivoted}, dim::Integer) = size(getfield(F, :factors), dim)
+size(F::Union{QR,QRCompactWY,QRPivoted}) = size(getfield(F, :factors))
+function size(Q::Union{QRCompactWYQ,QRPackedQ}, dim::Integer)
+    if 0 < dim
+        if dim <= 2
+            return size(getfield(Q, :factors), 1)
+        else
+            return 1
+        end
+    else
+        throw(BoundsError())
+    end
+end
+size(Q::AbstractQ) = size(Q, 1), size(Q, 2)
 
-
-function getindex(A::AbstractQ, i::Integer, j::Integer)
-    x = zeros(eltype(A), size(A, 1))
+function getindex(Q::AbstractQ, i::Integer, j::Integer)
+    x = zeros(eltype(Q), size(Q, 1))
     x[i] = 1
-    y = zeros(eltype(A), size(A, 2))
+    y = zeros(eltype(Q), size(Q, 2))
     y[j] = 1
-    return dot(x, lmul!(A, y))
+    return dot(x, lmul!(Q, y))
 end
 
 ## Multiplication by Q
